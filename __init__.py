@@ -1,4 +1,4 @@
-from .logger import AppLogger
+from ._logger import AppLogger
 
 logger = AppLogger()
 
