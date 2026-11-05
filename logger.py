@@ -20,7 +20,7 @@ class AppLogger:
 
         spacer = " | "
         log_format = ""
-        log_format += "<green>{time:HH:mm:ss:ms}</green>" + spacer
+        log_format += "<green>{time:HH:mm:ss.SSS}</green>" + spacer
         log_format += "<level>{level: <8}</level>" + spacer
         log_format += "<dim>{file}:{line}</dim>" + spacer if debug else ""
         log_format += "<level>{message}</level>"
