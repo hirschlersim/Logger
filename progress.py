@@ -2,9 +2,8 @@ from __future__ import annotations
 
 from typing import Self
 
+from loguru import logger
 from tqdm import tqdm
-
-from . import logger
 
 
 class Progress:
