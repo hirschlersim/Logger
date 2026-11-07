@@ -10,14 +10,26 @@ __all__ = ["setup_logging"]
 
 _DEFAULT_LEVEL = "INFO"
 _SEP = " | "
+_FILE_FORMAT = _SEP.join(
+    [
+        "{time:YYYY-MM-DD HH:mm:ss.SSS}",
+        "{level: <8}",
+        "{name}:{function}:{line}",
+        "{message}",
+    ]
+)
 
 
 def setup_logging(
     level: str | int | None = None,
     *,
+    log_file: str | os.PathLike[str] | None = None,
+    file_level: str | int = "DEBUG",
+    rotation: str | int | None = "10 MB",
+    retention: str | int | None = "7 days",
     colorize: bool | None = None,
 ) -> None:
-    """Install a tqdm-safe console sink.
+    """Install a tqdm-safe console sink and, optionally, a rotating log file.
 
     Safe to call repeatedly: each call fully replaces the previous setup. Add your
     own sinks with ``logger.add()`` *after* calling this, or they will be removed.
@@ -25,6 +37,10 @@ def setup_logging(
     Args:
         level: Console level. Falls back to the ``LOG_LEVEL`` env var, then ``INFO``.
             At ``DEBUG`` or lower the console also shows ``file:line``.
+        log_file: Also write to this file. Missing parent folders are created.
+        file_level: Level for the log file.
+        rotation: When to start a new file, in Loguru syntax ("10 MB", "1 day", ...).
+        retention: How long to keep rotated files ("7 days", or a count like 5).
         colorize: Force colours on or off. By default they are on when stdout is a
             terminal and the ``NO_COLOR`` env var is not set.
     """
@@ -42,6 +58,7 @@ def setup_logging(
             env_warning = (
                 f"Ignoring unknown LOG_LEVEL={env_value!r}, using {_DEFAULT_LEVEL}"
             )
+    file_no = _level_no(file_level)
     if colorize is None:
         colorize = _auto_colorize()
 
@@ -52,6 +69,16 @@ def setup_logging(
         format=_console_format(show_location=console_no <= logger.level("DEBUG").no),
         colorize=colorize,
     )
+    if log_file is not None:
+        logger.add(
+            log_file,
+            level=file_no,
+            format=_FILE_FORMAT,
+            rotation=rotation,
+            retention=retention,
+            encoding="utf-8",
+            colorize=False,
+        )
 
     if env_warning:
         logger.warning(env_warning)
