@@ -9,7 +9,7 @@ from loguru import logger
 __all__ = ["timed"]
 
 
-class timed:
+class timed:  # noqa: N801 - lowercase on purpose, like contextlib.suppress
     """Log how long a block took.
 
     Example::

@@ -16,3 +16,12 @@ dev = [
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "N", "SIM", "RUF"]
+# N999: the checkout folder may be named "Logger"; in projects it is libs/logger.
+ignore = ["N999"]
+
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
