@@ -1,8 +1,9 @@
 [project]
 name = "logger"
 version = "0.1.0"
-description = "Add your description here"
+description = "Loguru + tqdm logging setup, meant to be used as a git submodule in libs/logger"
 readme = "README.md"
+license = "MIT"
 requires-python = ">=3.12"
 dependencies = [
     "loguru>=0.7.3",
