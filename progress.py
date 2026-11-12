@@ -38,6 +38,9 @@ class Progress:
             self._bar.close()
             self.terminated = True
 
+    def is_full(self) -> bool:
+        return self._bar.n == self._bar.total
+
     # ------------------------------------------------------------------ #
     # Private
     # ------------------------------------------------------------------ #
